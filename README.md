@@ -1,212 +1,452 @@
 # Technology Gym
 
-Site de academia com apresentação de planos, atividades e matrícula online, com estrutura moderna e foco em experiência do usuário, performance e arquitetura escalável, utilizando React, TypeScript, Tailwind CSS e Vite.
-
-O projeto inclui componentes reutilizáveis, formulário com validação robusta e estrutura preparada para expansão futura, seguindo boas práticas de desenvolvimento front-end.
+> A modern and responsive gym website built with React, TypeScript, Tailwind CSS and Vite, focused on presenting gym plans, activities, units and schedules with a complete online enrollment experience.
 
 ---
 
-## Tecnologias Utilizadas
+## Overview
 
-- **React**: Construção de interfaces modernas e componentizadas
-- **TypeScript**: Tipagem estática e maior segurança no código
-- **Tailwind CSS**: Estilização utilitária e responsiva
-- **Vite**: Build tool rápida e eficiente
-- **React Hook Form**: Gerenciamento performático de formulários
-- **Zod**: Validação de dados com schema tipado
+**Technology Gym** is a modern front-end web application designed for a gym environment.
 
----
+The platform allows users to explore available activities, plans, units and schedules, and complete an online enrollment process through a validated multi-step form.
 
-## Funcionalidades
+The project focuses on:
 
-- Layout responsivo (desktop, tablet e mobile)
-- Seções institucionais para academias:
-  - Home
-  - Atividades
-  - Planos
-  - Unidades
-  - Horários
-
-- Formulário de matrícula com:
-  - Validação de campos
-  - Máscaras de entrada
-  - Feedback de erros em tempo real
-  - Telemetria de funil (tentativa, inválido, sucesso e abandono por etapa)
-
-- Observabilidade de runtime:
-  - Captura de erros via Error Boundary
-  - Captura de erros globais (`window.error` e `unhandledrejection`)
-  - Coleta de eventos em `localStorage` para análise local
-
-- Componentes reutilizáveis e escaláveis
-- Estrutura organizada para fácil manutenção
+* Modern user experience
+* Responsive design
+* Reusable components
+* Strong form validation
+* Runtime error handling
+* Local observability
+* Automated testing
+* CI/CD quality checks
 
 ---
 
-## Preview do Projeto
+## Features
 
-![Preview 1](./public/readmeHome.png)
-![Preview 2](./public/readmeText.png)
+### Gym Information
+
+* Home page
+* Activities
+* Plans
+* Units
+* Schedules
+* Responsive layouts for desktop, tablet and mobile
+
+### Online Enrollment
+
+* Structured enrollment form
+* Field validation
+* Input masks
+* Real-time validation feedback
+* Enrollment success flow
+* Invalid submission handling
+* Enrollment funnel tracking
+
+### Observability
+
+The application tracks important events locally to help understand user interactions and runtime problems.
+
+Tracked enrollment events include:
+
+* `enrollment_submit_attempt`
+* `enrollment_submit_invalid`
+* `enrollment_submit_success`
+* `enrollment_submit_error`
+* `enrollment_stage_interaction`
+* `enrollment_abandonment`
+
+Runtime errors are also captured through:
+
+* React Error Boundary
+* `window.error`
+* `unhandledrejection`
 
 ---
 
-## Objetivo do Projeto
+## Application Flow
 
-- componentização reutilizável
-- validação robusta de formulários
-- organização escalável
-- experiência de usuário moderna
-- código limpo e tipado
+```mermaid
+flowchart TD
 
----
+    A[User] --> B[Home Page]
 
-## Execução do Projeto
+    B --> C[Activities]
+    B --> D[Plans]
+    B --> E[Units]
+    B --> F[Schedules]
 
-### Pré-requisitos
+    D --> G[Select Plan]
+    G --> H[Enrollment Form]
 
-Antes de iniciar, você precisa ter instalado:
+    H --> I{Form Validation}
 
-- Node.js (versão LTS recomendada)
-- npm ou yarn
-- Git
+    I -->|Invalid| J[Validation Feedback]
+    J --> H
 
----
+    I -->|Valid| K[Submit Enrollment]
 
-### Passo a passo
+    K --> L[Enrollment Confirmation]
 
-Clone o repositório:
-
+    H --> M[Observability Events]
+    K --> M
+    M --> N[localStorage]
 ```
+
+---
+
+## System Architecture
+
+```mermaid
+flowchart LR
+
+    U[User]
+
+    U --> UI[React Application]
+
+    UI --> C[Reusable Components]
+
+    UI --> F[React Hook Form]
+
+    F --> V[Zod Validation]
+
+    UI --> O[Observability]
+
+    O --> EB[Error Boundary]
+    O --> GE[Global Error Handlers]
+    O --> LS[(localStorage)]
+
+    UI --> R[React Router]
+
+    CI[GitHub Actions] --> L[Lint]
+    CI --> P[Prettier]
+    CI --> T[Tests]
+    CI --> B[Build]
+
+    B --> D[Vercel Preview]
+```
+
+---
+
+## Enrollment Flow
+
+The enrollment process follows a validation-first approach.
+
+```mermaid
+flowchart TD
+
+    A[User chooses a plan] --> B[Enrollment Form]
+
+    B --> C[Enter Personal Information]
+
+    C --> D[Input Masks]
+
+    D --> E[Zod Schema Validation]
+
+    E --> F{Valid?}
+
+    F -->|No| G[Display Validation Errors]
+    G --> B
+
+    F -->|Yes| H[Submit Enrollment]
+
+    H --> I[Record Success Event]
+
+    I --> J[Confirmation Page]
+
+    H --> K[Runtime Error Handling]
+
+    K --> L[Record Error Event]
+```
+
+---
+
+## Observability Flow
+
+```mermaid
+flowchart TD
+
+    A[User Interaction] --> B{Event Type}
+
+    B -->|Enrollment| C[Enrollment Event]
+    B -->|Runtime Error| D[Runtime Error]
+
+    C --> E[Observability Layer]
+    D --> E
+
+    E --> F[localStorage]
+
+    F --> G[Local Development Analysis]
+```
+
+---
+
+## CI/CD Pipeline
+
+Every pull request targeting `main` can go through the project's automated quality pipeline.
+
+```mermaid
+flowchart LR
+
+    A[Pull Request] --> B[GitHub Actions]
+
+    B --> C[Lint]
+    C --> D[Prettier Check]
+    D --> E[Tests]
+    E --> F[Production Build]
+
+    F --> G[Vercel Preview]
+```
+
+### Pipeline checks
+
+* ESLint
+* Prettier
+* Automated tests
+* Production build
+* Vercel preview deployment
+
+---
+
+## Tech Stack
+
+| Technology      | Purpose                       |
+| --------------- | ----------------------------- |
+| React           | UI development                |
+| TypeScript      | Static typing                 |
+| Tailwind CSS    | Responsive styling            |
+| Vite            | Development and build tooling |
+| React Hook Form | Form management               |
+| Zod             | Schema-based validation       |
+| Vitest          | Testing                       |
+| GitHub Actions  | CI/CD                         |
+| Vercel          | Preview deployment            |
+
+---
+
+## Project Structure
+
+```text
+technology_gym/
+│
+├── .github/
+│   └── workflows/
+│       └── main.yml
+│
+├── .husky/
+│
+├── docs/
+│
+├── public/
+│
+├── scripts/
+│
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── hooks/
+│   ├── schemas/
+│   ├── utils/
+│   └── ...
+│
+├── .gitignore
+├── .prettierignore
+├── .prettierrc
+├── eslint.config.js
+├── index.html
+├── package.json
+├── tsconfig.json
+├── vercel.json
+├── vite.config.ts
+└── vitest.config.js
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+* Node.js (LTS recommended)
+* npm or Yarn
+* Git
+
+### 1. Clone the repository
+
+```bash
 git clone https://github.com/anamartinsr/technology_gym.git
 ```
 
-Acesse a pasta do projeto:
+### 2. Navigate to the project
 
-```
+```bash
 cd technology_gym
 ```
 
-Instale as dependências:
+### 3. Install dependencies
 
-```
+```bash
 npm install
 ```
 
-Execute o projeto em ambiente de desenvolvimento:
+### 4. Start the development server
 
-```
+```bash
 npm run dev
 ```
 
----
+The application will be available at:
 
-## Acesso à Aplicação
-
-Após iniciar, o projeto estará disponível em:
-
-```
+```text
 http://localhost:5173
 ```
 
 ---
 
-## Build para Produção
+## Production Build
 
-Para gerar a versão otimizada:
+Create an optimized production build:
 
-```
+```bash
 npm run build
 ```
 
-Preview da build:
+Preview the production build locally:
 
-```
+```bash
 npm run preview
 ```
 
 ---
 
-## Qualidade de Testes
+## Testing
 
-Além dos testes de componentes, o projeto agora cobre fluxos de integração de rotas e matrícula:
+The project includes tests covering important application flows.
 
-- Rota de matrícula carregando formulário completo
-- Fluxo de erro (submissão inválida com mensagens de validação)
-- Fluxo de sucesso (submissão válida + redirecionamento para confirmação)
-- Rota inexistente (página 404)
+### Tested scenarios
 
-Executar testes:
+* Enrollment page loading
+* Complete enrollment form
+* Invalid form submission
+* Validation error messages
+* Successful enrollment
+* Confirmation flow
+* Non-existent routes / 404 page
 
-```
+Run the test suite with:
+
+```bash
 npm run test
 ```
 
 ---
 
-## Observabilidade
+## Code Quality
 
-O projeto registra métricas e eventos de uso para diagnóstico local e análise de funil:
+The project uses automated tooling to maintain code quality and consistency.
 
-- Eventos de matrícula:
-  - `enrollment_submit_attempt`
-  - `enrollment_submit_invalid`
-  - `enrollment_submit_success`
-  - `enrollment_submit_error`
-  - `enrollment_stage_interaction`
-  - `enrollment_abandonment`
-- Erros de runtime:
-  - `runtime_error` (Error Boundary, `window.error`, `unhandledrejection`)
+### Lint
 
-Chaves de armazenamento local:
+```bash
+npm run lint
+```
 
-- `technology-gym-observability-events`
-- `technology-gym-web-vitals`
+### Formatting
 
----
+```bash
+npm run format:check
+```
 
-## CI/CD (GitHub Actions + Vercel Preview)
+### Build
 
-O workflow em pull request para `main` executa automaticamente:
-
-- Lint (`npm run lint`)
-- Prettier check (`npm run format:check`)
-- Testes (`npm run test`)
-- Build (`npm run build`)
-- Deploy de preview na Vercel (com comentário automático no PR)
-
-Arquivo do pipeline:
-
-- `.github/workflows/main.yml`
-
-Para habilitar preview deploy no PR, configure os secrets do repositório:
-
-- `VERCEL_TOKEN`
-- `VERCEL_ORG_ID`
-- `VERCEL_PROJECT_ID`
+```bash
+npm run build
+```
 
 ---
 
-## Boas Práticas Aplicadas
+## Development Principles
 
-- Componentes desacoplados
-- Tipagem forte com TypeScript
-- Validação centralizada com Zod
-- Separação de dados e UI
-- Responsividade mobile-first
-- Fluxos de integração testados
-- Observabilidade para erros e funil de conversão
-- Qualidade automatizada em CI/CD
+The project follows several front-end development practices:
 
----
-
-## Contribuições
-
-Contribuições são bem-vindas.
-
-Sinta-se à vontade para abrir issues, enviar pull requests ou sugerir melhorias.
+* Reusable and decoupled components
+* Strong typing with TypeScript
+* Centralized validation with Zod
+* Separation of UI and data concerns
+* Responsive mobile-first design
+* Integration testing for important flows
+* Runtime observability
+* Automated CI/CD quality checks
 
 ---
 
-## Forks e Uso do Projeto
+## Project Goals
 
-Você pode forkar, estudar, adaptar e evoluir este projeto livremente.
+The main goals of Technology Gym are to demonstrate:
+
+1. Component-based React development
+2. Type-safe front-end architecture
+3. Robust form validation
+4. Responsive user interfaces
+5. Maintainable project structure
+6. Automated testing
+7. Runtime error observability
+8. CI/CD integration
+
+---
+
+## Contribution
+
+Contributions and improvements are welcome.
+
+A typical contribution workflow:
+
+```text
+Fork
+  ↓
+Create Feature Branch
+  ↓
+Make Changes
+  ↓
+Run Lint & Tests
+  ↓
+Commit Changes
+  ↓
+Push Branch
+  ↓
+Open Pull Request
+```
+
+Example:
+
+```bash
+git checkout -b feature/my-improvement
+
+npm install
+npm run lint
+npm run test
+npm run build
+
+git add .
+git commit -m "feat: improve enrollment flow"
+git push origin feature/my-improvement
+```
+
+Then open a Pull Request against the `main` branch.
+
+---
+
+## License
+
+No explicit license is currently specified in the repository.
+
+---
+
+## Project
+
+**Technology Gym**
+
+A modern gym website focused on responsive UI, structured enrollment, validation, observability and automated development workflows.
